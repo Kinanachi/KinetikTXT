@@ -8,8 +8,8 @@ const bodyParser= require ("body-parser") // For later
 
 // Server Variables
 const app = express()
-const server = http.createServer(app)
-const io = socketIo(server)
+const httpServer = http.createServer(app)
+const io = socketIo(httpServer)
 const port = 8000
 
 // Socket.io Events
@@ -43,7 +43,7 @@ function startServer()
     .use(testRoute)
 
     // Start KinetikTXT
-    server.listen(port, () => 
+    httpServer.listen(port, () => 
     {
         console.log("KinetikTXT is running!")
     })
