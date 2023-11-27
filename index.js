@@ -9,7 +9,7 @@ const bodyParser= require ("body-parser") // For later
 // Server Variables
 const app = express()
 const httpServer = http.createServer(app)
-const io = socketIo(httpServer, { path: '/usr/435/socket.io' });
+const io = socketIo(httpServer)
 const port = 8000
 
 // Socket.io Events
