@@ -1,0 +1,30 @@
+<!-- BASE LAYER
+     Rather than copying and pasting this repeatedly,
+     create a base ejs file for all other ejs files
+     to include.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>KinetikTXT</title>
+        <link rel="stylesheet" href="/styles/core.css">
+
+        <!-- IMPORTANT -->
+        <!-- This ensures the clients are connecting to the Socket.io server -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
+        <script>
+            const socket = io();
+        </script>
+    </head>
+
+    <body>
+        <div>
+            <!-- IMPORTANT -->
+            <!-- Other .ejs files will insert their content here. -->
+            <%- body %>
+        </div>
+    </body>
+</html>

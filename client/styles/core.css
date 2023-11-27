@@ -1,0 +1,51 @@
+/* Setup Custom Font */
+@font-face
+{
+    font-family: "core-normal";
+    src: url("fonts/core-normal.ttf") format("truetype");
+}
+
+@font-face
+{
+    font-family: "core-bold";
+    src: url("fonts/core-bold.ttf") format("truetype");
+}
+
+body 
+{
+    font-family: "core-normal", sans-serif;
+    background-color: #2e303e;
+    color: white;
+    margin: 0;
+}
+
+p
+{
+    margin: 0;
+}
+
+.content-title
+{
+    text-align: center;
+    margin: 0;
+}
+
+.kinetik-blue
+{
+    color: #71a1ee ;
+}
+
+.italic
+{
+    font-style: italic;
+}
+
+h1
+{
+    font-family: "core-bold", sans-serif;
+    white-space: pre;
+    font-weight:900;
+    font-size: 3.25em;
+    text-align: center;
+    margin: 0;
+}
