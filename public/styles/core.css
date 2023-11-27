@@ -2,13 +2,13 @@
 @font-face
 {
     font-family: "core-normal";
-    src: url("fonts/core-normal.ttf") format("truetype");
+    src: url("../fonts/core-normal.ttf") format("truetype");
 }
 
 @font-face
 {
     font-family: "core-bold";
-    src: url("fonts/core-bold.ttf") format("truetype");
+    src: url("../fonts/core-bold.ttf") format("truetype");
 }
 
 body 
@@ -44,7 +44,6 @@ h1
 {
     font-family: "core-bold", sans-serif;
     white-space: pre;
-    font-weight:900;
     font-size: 3.25em;
     text-align: center;
     margin: 0;

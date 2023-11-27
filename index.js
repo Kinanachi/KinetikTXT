@@ -2,7 +2,9 @@
 const express = require("express")
 const http = require("http")
 const socketIo = require("socket.io")
+const ejs = require('ejs')
 const mysql = require("mysql") // For later
+const bodyParser= require ("body-parser") // For later
 
 // Server Variables
 const app = express()
@@ -35,7 +37,8 @@ function startServer()
 
     app
     .set("view engine", "ejs")
-    .use(express.static("public"))
+    .engine('html', ejs.renderFile)
+    .use(express.static(__dirname + '/public'))
     .use(indexRoute)
     .use(testRoute)
 
