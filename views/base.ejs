@@ -16,7 +16,7 @@
         <!-- This ensures the clients are connecting to the Socket.io server -->
         <script src="https://www.doc.gold.ac.uk/usr/435/socket.io/socket.io.js"></script>
         <script>
-            const socket = io();
+            const socket = io({ path: '/usr/435/socket.io' });
 
             // Check if the Client is connect to the Server
             socket.on("connect", () => 
