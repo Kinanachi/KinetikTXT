@@ -14,11 +14,9 @@
 
         <!-- IMPORTANT -->
         <!-- This ensures the clients are connecting to the Socket.io server -->
-        <script src="/socket.io/socket.io.js"></script>
+        <script src="https://www.doc.gold.ac.uk/usr/435/socket.io/socket.io.js"></script>
         <script>
-            const isLocal = false
-            const baseURL = isLocal ? "http://localhost:8000" : "https://www.doc.gold.ac.uk/usr/435"
-            const socket = io(baseURL, {path: "/socket.io"})
+            const socket = io();
 
             // Check if the Client is connect to the Server
             socket.on("connect", () => 
