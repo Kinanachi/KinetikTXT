@@ -35,7 +35,7 @@ function startServer()
 
     app
     .set("view engine", "ejs")
-    .use(express.static('client'))
+    .use(express.static("public"))
     .use(indexRoute)
     .use(testRoute)
 

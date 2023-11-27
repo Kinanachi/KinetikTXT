@@ -16,7 +16,20 @@
         <!-- This ensures the clients are connecting to the Socket.io server -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
         <script>
-            const socket = io();
+            const socket = io()
+
+            // Check if the Client is connect to the Server
+            socket.on("connect", () => 
+            {
+                console.log("Connected to Server")
+            })
+
+            // Check if the Client disconnected from the Server
+            socket.on("disconnect", () => 
+            {
+                console.log("Disconnected from Server")
+                // You can perform additional actions when the client is disconnected
+            })
         </script>
     </head>
 
