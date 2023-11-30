@@ -1,12 +1,11 @@
 // Dependencies
 const express = require("express")
-const expressSanitizer = require("express-sanitizer") // For Later
-const expressValidator = require ("express-validator") // For Later
+const expressSanitizer = require("express-sanitizer")
 const http = require("http")
 const socketIo = require("socket.io")
 const ejs = require("ejs")
 const mysql = require("mysql") // For later
-const bodyParser= require ("body-parser") // For later
+const bodyParser= require ("body-parser")
 
 // Server Variables
 const app = express()
@@ -68,14 +67,16 @@ function startServer()
     const testRoute = require("./routes/testRoute")
 
     app
-    .set("view engine", "ejs")
-    .engine('html', ejs.renderFile)
-    .use(express.static(__dirname + "/public"))
-    .use(indexRoute)
-    .use(loginRoute)
-    .use(databaseRoute)
-    .use(aboutRoute)
-    .use(testRoute)
+        .set("view engine", "ejs")
+        .engine('html', ejs.renderFile)
+        .use(express.static(__dirname + "/public"))
+        .use(bodyParser.urlencoded({ extended: true }))
+        .use(expressSanitizer())
+        .use(indexRoute)
+        .use(loginRoute)
+        .use(databaseRoute)
+        .use(aboutRoute)
+        .use(testRoute)
 
     // Start KinetikTXT
     httpServer.listen(port, () => 

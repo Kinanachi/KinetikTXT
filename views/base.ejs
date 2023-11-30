@@ -86,6 +86,30 @@
             // Check if the Client is connect to the Server
             socket.on("connect", fireServerFound)
         </script>
+        
+        <!-- IMPORTANT -->
+        <!-- This handles URL query parameters-->
+        <script>
+            // Function to get a specific parameter
+            function getQueryParam(name) 
+            {
+                const urlParams = new URLSearchParams(window.location.search)
+                return urlParams.get(name)
+            }
+          
+            // Search for a register error
+            const error = getQueryParam("error")
+            if (error === "register")
+            {
+                // Generic registration error message
+                alert("Please check that your registration details are correct.")
+            }
+            else if(error === "login")
+            {
+                // Generic login error message
+                alert("Please check that your login email is correct.")
+            }
+        </script>
     </head>
 
     <body>
