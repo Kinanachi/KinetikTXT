@@ -1,24 +1,30 @@
-const express = require('express')
+const express = require("express")
 const router = express.Router()
 
 router.get("/", (req, res) => 
 {
-    const dynamicText = "We do a little txting";
+    const showHeader = true
+    const dynamicText = "we do a little TXTing..."
     const dynamicContent = 
     `
         <div class="content-title">
             <h1>K I N E T I K   <span class="kinetik-blue">T X T</span></h1>
             <p class="italic">${dynamicText}</p>
         </div>
-        <div>
-            <p>This is the 1st paragraph inside a div</p>
-            <p>This is the 2nd paragraph inside a div</p>
+        <div class="generic-container">
+            <div class="global-chat-messages" id="globalMessages">
+                
+            </div>
+            <div class="generic-input-container">
+                <form id="chatForm">
+                    <input type="text" class="generic-input" id="chatInput" placeholder="Do a little TXTing here...">
+                    <button class="generic-input-button" type="submit">Send</button>
+                </form>
+            </div>
         </div>
-        <p>This is a paragraph below a div</p>
-        <a href="/test"><button>Go to Test Page</button></a>
     `
 
-    res.render('base', { body: dynamicContent, dynamicText });
+    res.render("base", { body: dynamicContent, dynamicText, showHeader})
 })
 
 module.exports = router

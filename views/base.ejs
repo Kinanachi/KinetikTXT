@@ -14,29 +14,103 @@
 
         <!-- IMPORTANT -->
         <!-- This ensures the clients are connecting to the Socket.io server -->
-        <script src="https://www.doc.gold.ac.uk/usr/435/socket.io/socket.io.js"></script>
+        
+        <!-- Use this src when running the server on Goldsmiths servers (they're weird) -->
+        <!-- https://www.doc.gold.ac.uk/usr/435/socket.io/socket.io.js -->
+        <!-- Use this src when running the server locally -->
+        <!-- /socket.io/socket.io.js -->
+        <script src="/socket.io/socket.io.js"></script>
         <script>
-            const socket = io({ path: '/usr/435/socket.io' });
+            // Use this path "/usr/435/socket.io" when running the server on Goldsmiths servers (they're weird)
+            // Otherwise use this path ""
+            const socket = io({path:""})
+
+            function fireServerFound()
+            {
+                console.log("Connected to KinetikTXT Server")
+
+                // Add a listener for "updateGlobalMessages" ONLY if the message container exists
+                const messagesContainer = document.getElementById("globalMessages")
+                if (messagesContainer)
+                {
+                    socket.on("updateGlobalMessages", (globalMessageStorage) => fireUpdateGlobalMessage(globalMessageStorage, messagesContainer))
+                }
+
+                // Add a listener for the chat input ONLY if it exists
+                const chatForm = document.getElementById("chatForm")
+                if (chatForm)
+                {
+                    chatForm.addEventListener("submit", invokeSendGlobalMessage);
+                }
+
+                socket.on("disconnect", fireServerLost)
+
+                // Tell the Server the Client is ready to sync
+                socket.emit("clientReady")
+            }
+
+            function fireServerLost()
+            {
+                console.log("Disconnected from KinetikTXT Server")
+            }
+
+            function fireUpdateGlobalMessage(globalMessageStorage, messagesContainer)
+            {
+                console.log("Update from KinetikTXT Server Received")
+
+                // Clear existing messages
+                messagesContainer.innerHTML = ""
+
+                // Add new messages
+                globalMessageStorage.forEach(message => 
+                {
+                    const messageElement = document.createElement("div")
+                    messageElement.textContent = `${message.user_id}: ${message.content}`
+                    messagesContainer.appendChild(messageElement)
+                })
+            }
+
+            function invokeSendGlobalMessage(event)
+            {
+                event.preventDefault()
+
+                const chatInputContents = document.getElementById("chatInput")
+                const message = chatInputContents.value
+
+                console.log("Sent Message Data to KinetikTXT Server")
+                socket.emit("sendGlobalMessage", message)
+
+                chatInputContents.value = ""
+            }
 
             // Check if the Client is connect to the Server
-            socket.on("connect", () => 
-            {
-                console.log("Connected to Server")
-            })
-
-            // Check if the Client disconnected from the Server
-            socket.on("disconnect", () => 
-            {
-                console.log("Disconnected from Server")
-                // You can perform additional actions when the client is disconnected
-            })
+            socket.on("connect", fireServerFound)
         </script>
     </head>
 
     <body>
+        <!-- Dynamic Header -->
+        <!-- Other (route).js files will indicate if they want the header to be shown -->
+        <% if (showHeader) { %>
+        <div class="navbar">
+            <a href="/" class="nav-text">
+                <button class="nav-button">H O M E</button>
+            </a>
+            <a href="/login" class="nav-text">
+                <button class="nav-button">L O G   I N</button>
+            </a>
+            <a href="/database" class="nav-text">
+                <button class="nav-button">D A T A B A S E</button>
+            </a>
+            <a href="/about" class="nav-text">
+                <button class="nav-button">A B O U T</button>
+            </a>
+        </div>
+        <% } %>
+        
         <div>
             <!-- IMPORTANT -->
-            <!-- Other .ejs files will insert their content here. -->
+            <!-- Other (route).js files will insert their content here. -->
             <%- body %>
         </div>
     </body>

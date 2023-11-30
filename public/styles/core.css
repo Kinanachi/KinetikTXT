@@ -1,4 +1,4 @@
-/* Setup Custom Font */
+/* FONT SETUP */
 @font-face
 {
     font-family: "core-normal";
@@ -11,12 +11,21 @@
     src: url("../fonts/core-bold.ttf") format("truetype");
 }
 
+@font-face
+{
+    font-family: "core-normali";
+    src: url("../fonts/core-normali.ttf") format("truetype");
+}
+
+
+/* ELEMENT SETUP */
 body 
 {
     font-family: "core-normal", sans-serif;
     background-color: #2e303e;
     color: white;
     margin: 0;
+    
 }
 
 p
@@ -24,6 +33,54 @@ p
     margin: 0;
 }
 
+h1
+{
+    font-family: "core-bold", sans-serif;
+    white-space: pre;
+    font-size: 3.25em;
+    text-align: center;
+    margin: 0;
+}
+
+
+/* NAVIGATION BAR SETUP */
+.navbar 
+{
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    height: 60px;
+    background-color: #ffffff;
+}
+
+.nav-button
+{
+    padding: 10px;
+    border: none;
+    background-color: #2e303e;
+    color: white;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+}
+
+.nav-button:hover
+{
+    background-color: #71a1ee;
+}
+
+.nav-text
+{
+    color: white !important;
+    text-decoration: none !important;
+    text-align: center;
+    font-size: 16px;
+    width: 100%;
+    height: 100%;
+}
+
+
+/* CLASS SETUP */
 .content-title
 {
     text-align: center;
@@ -37,14 +94,85 @@ p
 
 .italic
 {
-    font-style: italic;
+    font-family: "core-normali", sans-serif;
 }
 
-h1
+.generic-container
 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.generic-link
+{
+    color: #ec973e !important;
+    text-decoration: none !important;
     font-family: "core-bold", sans-serif;
-    white-space: pre;
-    font-size: 3.25em;
-    text-align: center;
-    margin: 0;
+}
+
+.generic-content50
+{
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-top: 20px;
+    width: calc(50%);
+    border-radius: 16px;
+}
+
+.global-chat-messages
+{
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-top: 20px;
+    overflow-y: auto;
+    width: calc(100% - 200px);
+    border-radius: 16px;
+}
+
+.generic-input-container
+{
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-top: 20px;
+    overflow-y: auto;
+    width: calc(100% - 200px);
+    border-radius: 16px;
+}
+
+.generic-input
+{
+    font-family: "core-normal", sans-serif;
+    color: white;
+    font-size: 16px;
+    padding: 0px;
+    margin: 0px;
+    width: calc(100% - 120px);
+    height: 24px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+.generic-input-button
+{
+    font-family: "core-normal", sans-serif;
+    color: #2e303e;
+    font-size: 16px;
+    padding: 0px;
+    margin: 0px;
+    width: 110px;
+    height: 24px;
+    border: none;
+    outline: none;
+    border-radius: 12px;
+    background-color: #ffffff;
+}
+
+.generic-input-button:hover
+{
+    color: #ffffff;
+    background-color: #82b16d;
 }
