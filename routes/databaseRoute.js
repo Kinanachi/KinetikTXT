@@ -4,6 +4,7 @@ const router = express.Router()
 router.get("/database", (req, res) => 
 {
     const showHeader = true
+    const showProfile = req.session.user_id != null
     const dynamicContent = 
     `
         <div class="content-title">
@@ -21,7 +22,7 @@ router.get("/database", (req, res) =>
         </div>
     `
 
-    res.render("base", { body: dynamicContent, showHeader})
+    res.render("base", { body: dynamicContent, showHeader, showProfile})
 })
 
 module.exports = router

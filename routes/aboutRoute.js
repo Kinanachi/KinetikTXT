@@ -4,6 +4,7 @@ const router = express.Router()
 router.get("/about", (req, res) => 
 {
     const showHeader = true
+    const showProfile = req.session.user_id != null
     const githubURL = "https://github.com/KingNanachi/KinetikTXT"
     const githubProfileURL = "https://github.com/KingNanachi"
     const dynamicContent = 
@@ -37,7 +38,7 @@ router.get("/about", (req, res) =>
         </div>
     `
 
-    res.render("base", { body: dynamicContent, githubURL, showHeader})
+    res.render("base", { body: dynamicContent, githubURL, showHeader, showProfile})
 })
 
 module.exports = router

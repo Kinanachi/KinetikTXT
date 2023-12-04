@@ -5,6 +5,7 @@ router.get("/", (req, res) =>
 {
     const showHeader = true
     const dynamicText = "we do a little TXTing..."
+    const showProfile = req.session.user_id != null
     const dynamicContent = 
     `
         <div class="content-title">
@@ -24,7 +25,7 @@ router.get("/", (req, res) =>
         </div>
     `
 
-    res.render("base", { body: dynamicContent, dynamicText, showHeader})
+    res.render("base", { body: dynamicContent, dynamicText, showHeader, showProfile})
 })
 
 module.exports = router

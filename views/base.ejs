@@ -86,30 +86,6 @@
             // Check if the Client is connect to the Server
             socket.on("connect", fireServerFound)
         </script>
-        
-        <!-- IMPORTANT -->
-        <!-- This handles URL query parameters-->
-        <script>
-            // Function to get a specific parameter
-            function getQueryParam(name) 
-            {
-                const urlParams = new URLSearchParams(window.location.search)
-                return urlParams.get(name)
-            }
-          
-            // Search for a register error
-            const error = getQueryParam("error")
-            if (error === "register")
-            {
-                // Generic registration error message
-                alert("Please check that your registration details are correct.")
-            }
-            else if(error === "login")
-            {
-                // Generic login error message
-                alert("Please check that your login email is correct.")
-            }
-        </script>
     </head>
 
     <body>
@@ -120,9 +96,19 @@
             <a href="/" class="nav-text">
                 <button class="nav-button">H O M E</button>
             </a>
-            <a href="/login" class="nav-text">
-                <button class="nav-button">L O G   I N</button>
-            </a>
+            
+            <% if (showProfile) { %>
+                <!-- Show profile button -->
+                <a href="/profile" class="nav-text">
+                    <button class="nav-button">P R O F I L E</button>
+                </a>
+            <% } else { %>
+                <!-- Show login button -->
+                <a href="/login" class="nav-text">
+                    <button class="nav-button">L O G   I N</button>
+                </a>
+            <% } %>
+
             <a href="/database" class="nav-text">
                 <button class="nav-button">D A T A B A S E</button>
             </a>
@@ -138,4 +124,49 @@
             <%- body %>
         </div>
     </body>
+
+    <!-- IMPORTANT -->
+    <!-- Certain scripts also need to be ran after loading the webpage-->
+    <!-- This script handles URL query parameters-->
+    <script>
+        // Function to get a specific parameter
+        function getQueryParam(name) 
+        {
+            const urlParams = new URLSearchParams(window.location.search)
+            return urlParams.get(name)
+        }
+        
+        const error = getQueryParam("error")
+        if (error === "register")
+        {
+            const infoString = getQueryParam("info")
+            if (infoString)
+            {
+                // Convert the info back into a javascript object
+                const errorObject = JSON.parse(decodeURIComponent(infoString))
+
+                alert(`Registration failed!\n${errorObject.registerMessages.join("\n")}`)
+
+                // Repopulate the register form for user convenience 
+                const registerForm = document.getElementById("registerForm")
+
+                if (registerForm) 
+                {
+                    registerForm.elements.registerUsername.value = errorObject.registerData.username
+                    registerForm.elements.registerEmail.value = errorObject.registerData.email
+                }
+            }
+            else
+            {
+                // If for whatever reason info is passed from the server
+                // Show a generic error message
+                alert("Registration failed! Something went wrong...")
+            }
+        }
+        else if(error === "login")
+        {
+            // Generic login error message don't give info for brute force attacks
+            alert("Login Failed!\nPlease check that your email and password are correct...")
+        }
+    </script>
 </html>
