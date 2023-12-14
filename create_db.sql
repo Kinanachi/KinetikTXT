@@ -51,10 +51,10 @@ BEGIN
     DECLARE count_emails INT;
 
     -- Check if the username already exists
-    SELECT COUNT(*) INTO count_usernames FROM users WHERE username = new_username;
+    SELECT COUNT(*) INTO count_usernames FROM Users WHERE username = new_username;
 
     -- Check if the email already exists
-    SELECT COUNT(*) INTO count_emails FROM users WHERE email = new_email;
+    SELECT COUNT(*) INTO count_emails FROM Users WHERE email = new_email;
 
     IF count_usernames > 0 THEN
         SELECT "Username taken" AS message, false AS success;
@@ -62,7 +62,7 @@ BEGIN
         SELECT "Email taken" AS message, false AS success;
     ELSE
         -- Create new user
-        INSERT INTO users (username, email, password) VALUES (new_username, new_email, new_password);
+        INSERT INTO Users (username, email, password) VALUES (new_username, new_email, new_password);
         SELECT NULL AS message, true AS success;
     END IF;
 END //
