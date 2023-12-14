@@ -172,7 +172,7 @@ async function fireSendGlobalMessage(socket, sessionData, message)
 }
 
 // Server Start
-function startServer(connection)
+async function startServer()
 {
     // Setup the default users
     const plainTextPassword = "123123123"
@@ -180,13 +180,7 @@ function startServer(connection)
     const query = "CALL CreateUser(?, ?, ?)"
     const values = ["KinetikTXT", "kt@kt.com", hashedPassword]
 
-    connection.query(query, values, (error, results) => 
-    {
-        if (error) 
-        {
-            console.error("Something went wrong while creating the root user!", error.message)
-        } 
-    })
+    await databaseQuery(query, values)
 
     // Setup Socket.io Connection Event
     io.use(expressSocketIoSession(session, {
@@ -240,23 +234,7 @@ function startServer(connection)
     })
 }
 
-// Attempt to get a connection from the database pool
-databasePool.getConnection((error, connection) => 
-{
-    if (error) 
-    {
-      console.log("Couldn't connect to the database pool!", error.message)
-      console.error("Failed to start KinetikTXT!")
-      
-      // This should stop everything
-      process.exit(1)
-    }
-  
-    console.log("Connected to the database pool")
-    startServer(connection)
-    // Release the connection back to the pool when done
-    connection.release()
-})
+startServer()
 
 // Other Functions
 function isAuthenticated(req, res, next)
@@ -280,9 +258,12 @@ function serverStats(req, res, next)
 }
 
 // Just create one function for running queries to reduce repeating code
+
+
+
 async function databaseQuery(query, values)
 {
-    const promise = new Promise((resolve, reject) =>
+    const connection = await new Promise((resolve, reject) =>
     {
         // Connect to the pool
         databasePool.getConnection((error, connection) => 
@@ -290,14 +271,23 @@ async function databaseQuery(query, values)
             if (error) 
             {
                 reject(error)
-                return
             }
-        
+            else
+            {
+                resolve(connection)
+            }
+        })
+    })
+    
+    try 
+    {
+        const results = new Promise((resolve, reject) =>
+        {
             // Run query
             connection.query(query, values, (error, results) => 
             {
                 connection.release()
-
+    
                 if (error) 
                 {
                     reject(error)
@@ -308,8 +298,12 @@ async function databaseQuery(query, values)
                 }
             })
         })
-    })
-    return promise
+        return results
+    }
+    catch(error)
+    {
+        console.error(error.message)
+    }
 }
 
 // This function is asynchronous
