@@ -34,6 +34,8 @@ const databasePool = mysql.createPool(databaseSettings)
 // Server Variables
 const app = express()
 const httpServer = http.createServer(app)
+// Use this path "/usr/435/socket.io" when running the server on Goldsmiths servers
+// Otherwise use this path ""
 const io = socketIo(httpServer, { path: "/usr/435/socket.io" })
 const port = 8000
 
@@ -182,7 +184,7 @@ function startServer(connection)
     {
         if (error) 
         {
-            console.log("Something went wrong while creating the root user!")
+            console.error("Something went wrong while creating the root user!", error.message)
         } 
     })
 
