@@ -13,9 +13,9 @@ Test account details:
 
 ## How to Play
 Create an account to play
-    Your username can only contain letters, numbers, -, and _.
-    Your username should be 2 characters or more
-    Your Password should be 8 character or more
+- Your username can only contain letters, numbers, -, and _.
+- Your username should be 2 characters or more
+- Your Password should be 8 character or more
 Go to the home page
 Be the first person to type the word to score a point
 
