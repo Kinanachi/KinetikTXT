@@ -36,7 +36,7 @@ const app = express()
 const httpServer = http.createServer(app)
 // Use this path "/usr/435/socket.io" when running the server on Goldsmiths servers
 // Otherwise use this path ""
-const io = socketIo(httpServer, { path: "/usr/435/socket.io" })
+const io = socketIo(httpServer, { path: "" })
 const port = 8000
 
 // API Variables
@@ -172,7 +172,7 @@ async function fireSendGlobalMessage(socket, sessionData, message)
 }
 
 // Server Start
-async function startServer()
+function startServer(connection)
 {
     // Setup the default users
     const plainTextPassword = "123123123"
@@ -180,7 +180,15 @@ async function startServer()
     const query = "CALL CreateUser(?, ?, ?)"
     const values = ["KinetikTXT", "kt@kt.com", hashedPassword]
 
-    await databaseQuery(query, values)
+    databaseQuery(query, values)
+
+    connection.query(query, values, (error, results) => 
+    {
+        if (error) 
+        {
+            console.error("Something went wrong while creating the root user!", error.message)
+        } 
+    })
 
     // Setup Socket.io Connection Event
     io.use(expressSocketIoSession(session, {
@@ -234,7 +242,23 @@ async function startServer()
     })
 }
 
-startServer()
+// Attempt to get a connection from the database pool
+databasePool.getConnection((error, connection) => 
+{
+    if (error) 
+    {
+      console.log("Couldn't connect to the database pool!", error.message)
+      console.error("Failed to start KinetikTXT!")
+      
+      // This should stop everything
+      process.exit(1)
+    }
+  
+    console.log("Connected to the database pool")
+    startServer(connection)
+    // Release the connection back to the pool when done
+    connection.release()
+})
 
 // Other Functions
 function isAuthenticated(req, res, next)
@@ -258,12 +282,9 @@ function serverStats(req, res, next)
 }
 
 // Just create one function for running queries to reduce repeating code
-
-
-
 async function databaseQuery(query, values)
 {
-    const connection = await new Promise((resolve, reject) =>
+    const promise = new Promise((resolve, reject) =>
     {
         // Connect to the pool
         databasePool.getConnection((error, connection) => 
@@ -271,23 +292,14 @@ async function databaseQuery(query, values)
             if (error) 
             {
                 reject(error)
+                return
             }
-            else
-            {
-                resolve(connection)
-            }
-        })
-    })
-    
-    try 
-    {
-        const results = new Promise((resolve, reject) =>
-        {
+        
             // Run query
             connection.query(query, values, (error, results) => 
             {
                 connection.release()
-    
+
                 if (error) 
                 {
                     reject(error)
@@ -298,12 +310,8 @@ async function databaseQuery(query, values)
                 }
             })
         })
-        return results
-    }
-    catch(error)
-    {
-        console.error(error.message)
-    }
+    })
+    return promise
 }
 
 // This function is asynchronous
