@@ -19,11 +19,11 @@
         <!-- https://www.doc.gold.ac.uk/usr/435/socket.io/socket.io.js -->
         <!-- Use this src when running the server elsewhere -->
         <!-- /socket.io/socket.io.js -->
-        <script src="/socket.io/socket.io.js"></script>
+        <script src="https://www.doc.gold.ac.uk/usr/435/socket.io/socket.io.js"></script>
         <script>
             // Use this path "/usr/435/socket.io" when running the server on Goldsmiths servers (they're weird)
             // Otherwise use this path ""
-            const socket = io({path:""})
+            const socket = io({path:"/usr/435/socket.io"})
 
             function fireServerFound()
             {

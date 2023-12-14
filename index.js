@@ -34,7 +34,7 @@ const databasePool = mysql.createPool(databaseSettings)
 // Server Variables
 const app = express()
 const httpServer = http.createServer(app)
-const io = socketIo(httpServer, { path: "" })
+const io = socketIo(httpServer, { path: "/usr/435/socket.io" })
 const port = 8000
 
 // API Variables
