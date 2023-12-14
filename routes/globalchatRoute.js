@@ -1,13 +1,10 @@
+// Express Variables
 const express = require("express")
+const {databasePool, isAuthenticated} = require("../index.js")
 const router = express.Router()
 
-router.get("/", (req, res) => 
+router.get("/globalchat", isAuthenticated, (req, res) => 
 {
-    // Lazy redirect
-    if (req.session.user_id)
-    {
-        return res.redirect("/globalchat")
-    }
     const showHeader = true
     const dynamicText = "we do a little TXTing..."
     const showProfile = req.session.user_id != null
@@ -23,8 +20,8 @@ router.get("/", (req, res) =>
             </div>
             <div class="generic-input-container">
                 <form id="chatForm">
-                    <input type="text" class="generic-input" id="chatInput" placeholder="You need to be logged in to send messages..." disabled>
-                    <button class="generic-input-button" type="submit" disabled>Send</button>
+                    <input type="text" class="generic-input" id="chatInput" placeholder="Do a little TXTing here...">
+                    <button class="generic-input-button" type="submit">Send</button>
                 </form>
             </div>
         </div>

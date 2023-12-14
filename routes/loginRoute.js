@@ -4,13 +4,12 @@
 // Express Variables
 const express = require("express")
 const expressValidator = require ("express-validator")
-const {databasePool, isAuthenticated} = require("../index.js")
+const {databaseQuery} = require("../index.js")
 const router = express.Router()
 
-
 // Password Hashing Variables
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
+const bcrypt = require("bcrypt")
+const saltRounds = 10
 
 // Validation
 // It's written out here for the sake of keeping things clean
@@ -29,87 +28,20 @@ const validateLoginForm =
 // Functions
 async function createUser(registerFormData) 
 {
-    const promise = new Promise((resolve, reject) =>
-    {
-        // Connect to the pool
-        databasePool.getConnection((error, connection) => 
-        {
-            if (error) 
-            {
-                reject(error)
-                return
-            }
-        
-            const query = "CALL CreateUser(?, ?, ?)"
-            const values = [registerFormData.username, registerFormData.email, registerFormData.hashedPassword]
 
-            connection.query(query, values, (error, results) => 
-            {
-                connection.release()
+    const query = "CALL CreateUser(?, ?, ?)"
+    const values = [registerFormData.username, registerFormData.email, registerFormData.hashedPassword]
 
-                if (error) 
-                {
-                    reject(error)
-                } 
-                else 
-                {
-                    const result = results[0][0]
-                    /*  result is an object
-                        {
-                            message: null or String,
-                            success: true or false
-                        }
-                    */
-                    resolve(result)
-                }
-            })
-        })
-    })
-    return promise
+    return await databaseQuery(query, values)
 }
 
 async function getUserByEmail(email)
 {
-    const promise = new Promise((resolve, reject) =>
-    {
-        // Connect to the pool
-        databasePool.getConnection((error, connection) => 
-        {
-            if (error) 
-            {
-                reject(error)
-                return
-            }
-    
-        const query = "CALL GetUserByEmail(?)"
-        const values = [email]
-  
-        connection.query(query, values, (error, results) => 
-        {
-            connection.release()
+    const query = "CALL GetUserByEmail(?)"
+    const values = [email]
 
-            if (error) 
-            {
-                reject(error)
-            } 
-            else 
-            {
-                const result = results[0]
-                /*  result is an object
-                    {
-                        username: String,
-                        email: String,
-                        password: Hash (String),
-                        score: int,
-                    }
-                */
-                resolve(result)
-            }
-        })
-      })
-    })
-    return promise
-  }
+    return await databaseQuery(query, values)
+}
 
 
 function prepareObjectForURL(Object)
@@ -210,17 +142,18 @@ router.post("/login", validateLoginForm, async (req, res) =>
     try
     {
         // Check if there is any user with a matching email
-        const user = await getUserByEmail(loginFormData.email)
+        const user = (await getUserByEmail(loginFormData.email))[0][0]
 
-        if (!user || user.length === 0)
+        if (user === undefined)
         {
             // User doesn't exist
             errorMessageArray.push("Invalid email, password or both")
         }
         else
         {
+            console.log(user)
             // Now check if the password matches
-            const passwordCorrect = await bcrypt.compare(loginFormData.password, user[0].password)
+            const passwordCorrect = await bcrypt.compare(loginFormData.password, user.password)
             if (!passwordCorrect)
             {
                 // This password doesn't match for this user
@@ -237,10 +170,10 @@ router.post("/login", validateLoginForm, async (req, res) =>
         }
 
         // Redirect to the home page
-        console.log(`Logging In: [${user[0].user_id}] ${user[0].username}`)
-        req.session.user_id = user[0].user_id
-        req.session.username = user[0].username
-        req.session.email = user[0].email
+        console.log(`Logging In: [${user.user_id}] ${user.username}`)
+        req.session.user_id = user.user_id
+        req.session.username = user.username
+        req.session.email = user.email
         res.redirect("/")
     }
     catch (error)
@@ -308,7 +241,7 @@ router.post("/register", validateRegisterForm, async (req, res) =>
     
         // Then store in database
         // "await" is used because it takes time to process queries
-        const registerResults = await createUser(registerFormData)
+        let registerResults = (await createUser(registerFormData))[0][0]
 
         if (registerResults.success)
         {
@@ -321,7 +254,12 @@ router.post("/register", validateRegisterForm, async (req, res) =>
             return res.redirect(`/login?error=register&info=${prepareObjectForURL(errorObject)}`)
         }
     
-        // Redirect to the home page
+        // Redirect to the home page and log the user in
+        const user = (await getUserByEmail(registerFormData.email))[0][0]
+        console.log(`Logging In: [${user.user_id}] ${user.username}`)
+        req.session.user_id = user.user_id
+        req.session.username = user.username
+        req.session.email = user.email
         res.redirect("/")
     }
     catch (error)

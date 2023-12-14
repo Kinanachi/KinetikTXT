@@ -42,6 +42,14 @@ h1
     margin: 0;
 }
 
+h2
+{
+    font-family: "core-bold", sans-serif;
+    white-space: pre;
+    text-align: center;
+    margin: 0;
+}
+
 
 /* NAVIGATION BAR SETUP */
 .navbar 

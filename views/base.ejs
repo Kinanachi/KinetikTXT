@@ -17,7 +17,7 @@
         
         <!-- Use this src when running the server on Goldsmiths servers (they're weird) -->
         <!-- https://www.doc.gold.ac.uk/usr/435/socket.io/socket.io.js -->
-        <!-- Use this src when running the server locally -->
+        <!-- Use this src when running the server elsewhere -->
         <!-- /socket.io/socket.io.js -->
         <script src="/socket.io/socket.io.js"></script>
         <script>
@@ -36,11 +36,18 @@
                     socket.on("updateGlobalMessages", (globalMessageStorage) => fireUpdateGlobalMessage(globalMessageStorage, messagesContainer))
                 }
 
+                // Add a listener for "updateRandomWord" ONLY if the word container exists
+                const randomWordContainer = document.getElementById("randomWordContainer")
+                if (randomWordContainer)
+                {
+                    socket.on("updateRandomWord", (randomWord) => fireUpdateRandomWord(randomWord, randomWordContainer))
+                }
+
                 // Add a listener for the chat input ONLY if it exists
                 const chatForm = document.getElementById("chatForm")
                 if (chatForm)
                 {
-                    chatForm.addEventListener("submit", invokeSendGlobalMessage);
+                    chatForm.addEventListener("submit", invokeSendGlobalMessage)
                 }
 
                 socket.on("disconnect", fireServerLost)
@@ -65,9 +72,28 @@
                 globalMessageStorage.forEach(message => 
                 {
                     const messageElement = document.createElement("div")
-                    messageElement.textContent = `${message.user_id}: ${message.content}`
+
+                    // Create a link to the user's profile
+                    const usernameLink = document.createElement("a")
+                    usernameLink.href = `/profile?user=${message.user_id}`
+                    usernameLink.className = "generic-link"
+                    usernameLink.textContent = message.username
+
+                    // Put everything together
+                    // https://developer.mozilla.org/en-US/docs/Web/API/Document/createTextNode
+                    messageElement.appendChild(usernameLink)
+                    messageElement.appendChild(document.createTextNode(`: ${message.content}`))
+
                     messagesContainer.appendChild(messageElement)
                 })
+            }
+
+            function fireUpdateRandomWord(randomWord, randomWordContainer)
+            {
+                console.log("Update from KinetikTXT Server Received")
+
+                // Set new word
+                randomWordContainer.innerHTML = `The new word is... <span class="kinetik-blue">${randomWord}</span>`
             }
 
             function invokeSendGlobalMessage(event)
@@ -93,16 +119,21 @@
         <!-- Other (route).js files will indicate if they want the header to be shown -->
         <% if (showHeader) { %>
         <div class="navbar">
-            <a href="/" class="nav-text">
-                <button class="nav-button">H O M E</button>
-            </a>
-            
             <% if (showProfile) { %>
+                <!-- Show functional version of index page -->
+                <a href="/globalchat" class="nav-text">
+                    <button class="nav-button">H O M E</button>
+                </a>
+
                 <!-- Show profile button -->
                 <a href="/profile" class="nav-text">
                     <button class="nav-button">P R O F I L E</button>
                 </a>
             <% } else { %>
+                <a href="/" class="nav-text">
+                    <button class="nav-button">H O M E</button>
+                </a>
+
                 <!-- Show login button -->
                 <a href="/login" class="nav-text">
                     <button class="nav-button">L O G   I N</button>
