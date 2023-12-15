@@ -93,7 +93,7 @@ router.get("/database", async (req, res) =>
                     ${searchResults.length > 0 ? searchResults.map(result =>
                         `
                             <div class="generic-content50">
-                                <p>Username: <a class = "generic-link" href="/profile?user=${result.user_id}">${result.username}</a></p>
+                                <p>Username: <a class = "generic-link" href="https://www.doc.gold.ac.uk/usr/435/profile?user=${result.user_id}">${result.username}</a></p>
                                 <p>Score: ${result.score}</p>
                             </div>
                         `).join("")

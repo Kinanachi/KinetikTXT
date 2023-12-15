@@ -269,7 +269,7 @@ function isAuthenticated(req, res, next)
     }
     else
     {
-        res.redirect("/login")
+        res.redirect("https://www.doc.gold.ac.uk/usr/435/login")
     }
 }
 

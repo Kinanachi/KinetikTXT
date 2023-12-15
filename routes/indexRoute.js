@@ -6,7 +6,7 @@ router.get("/", (req, res) =>
     // Lazy redirect
     if (req.session.user_id)
     {
-        return res.redirect("/globalchat")
+        return res.redirect("https://www.doc.gold.ac.uk/usr/435/globalchat")
     }
     const showHeader = true
     const dynamicText = "we do a little TXTing..."

@@ -23,7 +23,7 @@ router.get("/processfriendship", isAuthenticated, async (req, res) =>
         if (result && result.success)
         {
             console.log("Processed friendship:",result.message)
-            return res.redirect(`/profile?user=${receiverId}`)
+            return res.redirect(`https://www.doc.gold.ac.uk/usr/435/profile?user=${receiverId}`)
         }
         else
         {
@@ -34,7 +34,7 @@ router.get("/processfriendship", isAuthenticated, async (req, res) =>
     {
 
     }
-    res.redirect("/profile")
+    res.redirect("https://www.doc.gold.ac.uk/usr/435/profile")
 })
 
 module.exports = router

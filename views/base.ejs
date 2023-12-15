@@ -75,7 +75,7 @@
 
                     // Create a link to the user's profile
                     const usernameLink = document.createElement("a")
-                    usernameLink.href = `/profile?user=${message.user_id}`
+                    usernameLink.href = `https://www.doc.gold.ac.uk/usr/435/profile?user=${message.user_id}`
                     usernameLink.className = "generic-link"
                     usernameLink.textContent = message.username
 
@@ -121,12 +121,12 @@
         <div class="navbar">
             <% if (showProfile) { %>
                 <!-- Show functional version of index page -->
-                <a href="/globalchat" class="nav-text">
+                <a href="https://www.doc.gold.ac.uk/usr/435/globalchat" class="nav-text">
                     <button class="nav-button">H O M E</button>
                 </a>
 
                 <!-- Show profile button -->
-                <a href="/profile" class="nav-text">
+                <a href="https://www.doc.gold.ac.uk/usr/435/profile" class="nav-text">
                     <button class="nav-button">P R O F I L E</button>
                 </a>
             <% } else { %>
@@ -135,15 +135,15 @@
                 </a>
 
                 <!-- Show login button -->
-                <a href="/login" class="nav-text">
+                <a href="https://www.doc.gold.ac.uk/usr/435/login" class="nav-text">
                     <button class="nav-button">L O G   I N</button>
                 </a>
             <% } %>
 
-            <a href="/database" class="nav-text">
+            <a href="https://www.doc.gold.ac.uk/usr/435/database" class="nav-text">
                 <button class="nav-button">D A T A B A S E</button>
             </a>
-            <a href="/about" class="nav-text">
+            <a href="https://www.doc.gold.ac.uk/usr/435/about" class="nav-text">
                 <button class="nav-button">A B O U T</button>
             </a>
         </div>

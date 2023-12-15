@@ -9,9 +9,9 @@ router.get("/logout", isAuthenticated, (req, res) =>
     {
         if (error)
         {
-            return res.redirect("/")
+            return res.redirect("https://www.doc.gold.ac.uk/usr/435/")
         }
-        return res.redirect("/login")
+        return res.redirect("https://www.doc.gold.ac.uk/usr/435/login")
     })
 })
 

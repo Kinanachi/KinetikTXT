@@ -75,7 +75,7 @@ router.get("/login", isNotAuthenticated, (req, res) =>
 
         <div class = "generic-container">
             <div class = "generic-content50">
-                <form class="account-form" id="loginForm" action="/login" method="post">
+                <form class="account-form" id="loginForm" action="https://www.doc.gold.ac.uk/usr/435/login" method="post">
                     Enter your login details
                     <br>
                     <br>
@@ -90,7 +90,7 @@ router.get("/login", isNotAuthenticated, (req, res) =>
             </div>
 
             <div class = "generic-content50">
-                <form class="account-form" id="registerForm" action="/register" method="post">
+                <form class="account-form" id="registerForm" action="https://www.doc.gold.ac.uk/usr/435/register" method="post">
                     Or register a new account
                     <br>
                     <br>
@@ -166,7 +166,7 @@ router.post("/login", validateLoginForm, async (req, res) =>
         {
             // This means there were errors
             // Redirect the user back to the login page with the error information
-            return res.redirect(`/login?error=login&info=${prepareObjectForURL(errorObject)}`)
+            return res.redirect(`https://www.doc.gold.ac.uk/usr/435/login?error=login&info=${prepareObjectForURL(errorObject)}`)
         }
 
         // Redirect to the home page
@@ -174,7 +174,7 @@ router.post("/login", validateLoginForm, async (req, res) =>
         req.session.user_id = user.user_id
         req.session.username = user.username
         req.session.email = user.email
-        res.redirect("/")
+        res.redirect("https://www.doc.gold.ac.uk/usr/435/")
     }
     catch (error)
     {
@@ -232,7 +232,7 @@ router.post("/register", validateRegisterForm, async (req, res) =>
             delete registerFormData.hashedPassword
     
             // Redirect the user back to the login page with the error information
-            return res.redirect(`/login?error=register&info=${prepareObjectForURL(errorObject)}`)
+            return res.redirect(`https://www.doc.gold.ac.uk/usr/435/login?error=register&info=${prepareObjectForURL(errorObject)}`)
         }
     
         // Hash the password
@@ -251,7 +251,7 @@ router.post("/register", validateRegisterForm, async (req, res) =>
         else
         {
             errorMessageArray.push(registerResults.message)
-            return res.redirect(`/login?error=register&info=${prepareObjectForURL(errorObject)}`)
+            return res.redirect(`https://www.doc.gold.ac.uk/usr/435/login?error=register&info=${prepareObjectForURL(errorObject)}`)
         }
     
         // Redirect to the home page and log the user in
@@ -260,7 +260,7 @@ router.post("/register", validateRegisterForm, async (req, res) =>
         req.session.user_id = user.user_id
         req.session.username = user.username
         req.session.email = user.email
-        res.redirect("/")
+        res.redirect("https://www.doc.gold.ac.uk/usr/435/")
     }
     catch (error)
     {
@@ -269,7 +269,7 @@ router.post("/register", validateRegisterForm, async (req, res) =>
         errorMessageArray.push(error.message)
 
         // Redirect the user back to the login page with the error information
-        return res.redirect(`/login?error=register&info=${prepareObjectForURL(errorObject)}`)
+        return res.redirect(`https://www.doc.gold.ac.uk/usr/435/login?error=register&info=${prepareObjectForURL(errorObject)}`)
     }
 })
 

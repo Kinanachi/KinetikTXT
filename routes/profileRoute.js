@@ -39,7 +39,7 @@ router.get("/profile", async (req, res) =>
     if (!showProfile && !displayId)
     {
         // This means a client needs to log into a user first
-        return res.redirect("/login")
+        return res.redirect("https://www.doc.gold.ac.uk/usr/435/login")
     }
     else if(!displayId || displayId == req.session.user_id)
     {
